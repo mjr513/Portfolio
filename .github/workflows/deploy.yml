@@ -3,11 +3,12 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - main  # Triggers deployment when pushing to 'main'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -16,13 +17,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/mjr513/Portfolio/new/main.git
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/mjr513/Portfolio.git
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci  # Faster and more reliable than 'npm install'
 
       - name: Build Project
-        run: npm run build
+        run: npm run build  # Ensure you have a proper build script in package.json
 
       - name: Deploy to GitHub Pages
-        run: npm run deploy
+        run: |
+          git checkout --orphan gh-pages
+          git --work-tree dist add --all  # Ensure 'dist' is your build output folder
+          git --work-tree dist commit -m "Deploy to GitHub Pages"
+          git push origin HEAD:gh-pages --force
