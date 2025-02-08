@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "preinstall": "npm install --save-dev vite", 
-  "dev": "vite",
-  "build": "vite build",
-  "start": "vite preview"
-},
+    "preinstall": "npm install --save-dev vite",
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview"
+  },
   "devDependencies": {
     "vite": "^6.1.0"
   }
